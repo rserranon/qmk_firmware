@@ -20,8 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum _layers {
     _QWERTY = 0,
-    _LOWER,
-    _RAISE,
+    _SYM,
+    _NAV,
     _ADJUST,
     _GAMING,
 };
@@ -43,33 +43,52 @@ enum custom_keycodes {
     KC_LAYER
 };
 
+// Home row modes
+// Left-hand home row mods
+#define SFT_A LSFT_T(KC_A)
+#define CTL_S LCTL_T(KC_S)
+#define ALT_D LALT_T(KC_D)
+#define GUI_F LGUI_T(KC_F)
+
+// Right-hand home row mods
+#define GUI_J RGUI_T(KC_J)
+#define ALT_K LALT_T(KC_K)
+#define CTL_L RCTL_T(KC_L)
+#define SFT_SCLN RSFT_T(KC_SCLN)
+
+// Turn on Layers when held keys ESC & ENTR  when pressed
+#define ESC_NAV LT(_NAV, KC_ESC)
+#define ENTR_SYM LT(_SYM, KC_ENT)
+#define SPC_NAV LT(_NAV, KC_SPC)
+#define BSPC_SYM LT(_SYM, KC_BSPC)
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * QWERTY
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  `   |
+ * | GRV  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |KC_BSPC|
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Caps |   A  |   S  |   D  |   F  |   G  |                    |   H  |   J  |   K  |   L  |   ;  |  '   |
+ * | TAB | SFT_A | CTL_S| ALT_D| GUI_F|   G  |                    |   H  | GUI_J| ALT_K| CTL_L|SFT_SCLN|  ' |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |  \   |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                          | LAYER| LCTR | /Enter  /       \Space \  |  [   |  ]   |
- *                          |      |      |/       /         \      \ |      |      |
+ *                          | LAYER| LCTR | /Enter  /       \Space \  | LAYER|  ]   |
+ *                          |      |      |/ Layer /         \Laye  \ |      |      |
  *                          `--------------------'           '------''-------------'
  */
 
 [_QWERTY] = LAYOUT(
-  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,  KC_P,    KC_GRV,
-  KC_CAPS,   KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                    KC_H,    KC_J,    KC_K,   KC_L,   KC_SCLN, KC_QUOT,
+  KC_GRV,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,  KC_P,    KC_BSPC,
+  KC_TAB,   SFT_A,  CTL_S,   ALT_D,   GUI_F,    KC_G,                     KC_H,   GUI_J,   ALT_K,   CTL_L, SFT_SCLN, KC_QUOT,
   KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,                     KC_N,    KC_M, KC_COMM,  KC_DOT,  KC_SLSH, KC_BSLS,
-                            KC_LAYER, KC_LCTL, KC_ENT,                  KC_SPC,  KC_LBRC, KC_RBRC
+                            KC_LAYER, ESC_NAV, ENTR_SYM,       SPC_NAV,  BSPC_SYM, KC_RBRC
 ),
 
-/* LOWER
+/* NAV
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Tab  |      |  Up  |      |QK_BOOT|     |                    | PWrd | NWrd | Pscr |Scroll| Pause| F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Caps | Left | Down | Rigth|      |      |                    |  Ins | Home | PUp  |      |      |      |
+ * | Caps | Left | Down | Rigth|      |      |                    |  Left | Down | Up  | Right|      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Shift|      |      |      |      |      |-------|    |-------|      | Menu |  Del |  End | PDown|      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -77,14 +96,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                          |      |      |/       /         \      \ |      |       |
  *                          `--------------------'           '------''--------------'
  */
-[_LOWER] = LAYOUT(
+[_NAV] = LAYOUT(
   _______, XXXXXXX,   KC_UP, XXXXXXX, QK_BOOT, XXXXXXX,                      KC_PRVWD, KC_NXTWD,KC_PSCR,  KC_SCRL, KC_PAUS,  KC_F12,
   _______, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX,                       KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_PGUP, XXXXXXX,
   _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_APP,  KC_DEL, KC_END, KC_PGDN, XXXXXXX,
                                 _______, KC_RCTL, _______,                 _______, XXXXXXX, XXXXXXX
 ),
 
-/* RAISE
+/* SYM
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | Tab  |      |  Up  |      |QK_BOOT|     |                    | PWrd | NWrd | Pscr |Scroll| Pause| F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
@@ -96,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                          |      |      |/       /         \      \ |      |       |
  *                          `--------------------'           '------''--------------'
  */
-[_RAISE] = LAYOUT(
+[_SYM] = LAYOUT(
   _______,  KC_INS,  KC_PSCR,  KC_APP,  XXXXXXX, XXXXXXX,                       KC_PGUP, KC_PRVWD, KC_UP, KC_NXTWD, KC_DLINE, KC_BSPC,
   _______,  KC_LALT, KC_LCTL,  KC_LSFT,  XXXXXXX, KC_CAPS,                      KC_PGDN, KC_LEFT,  KC_DOWN, KC_RGHT,KC_DEL,   KC_BSPC,
   _______,  KC_UNDO, KC_CUT,   KC_COPY, KC_PASTE, XXXXXXX,                      XXXXXXX, KC_LSTRT, XXXXXXX, KC_LEND, _______, _______,
@@ -123,7 +142,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 )
 };
 // clang-format on
-#define OLED_ENABLE true; // ************ REMOVE THIS TO COMPILE *************************
 
 #ifdef OLED_ENABLE
 
@@ -135,8 +153,6 @@ static void render_logo(void) {
 }
 
 /* 32 * 14 os logos */
-static const char PROGMEM windows_logo[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xbc, 0xbc, 0xbe, 0xbe, 0x00, 0xbe, 0xbe, 0xbf, 0xbf, 0xbf, 0xbf, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x07, 0x07, 0x0f, 0x0f, 0x00, 0x0f, 0x0f, 0x1f, 0x1f, 0x1f, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
 static const char PROGMEM mac_logo[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0xf0, 0xf8, 0xf8, 0xf8, 0xf0, 0xf6, 0xfb, 0xfb, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x07, 0x0f, 0x1f, 0x1f, 0x0f, 0x0f, 0x1f, 0x1f, 0x0f, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 /* Smart Backspace Delete */
@@ -305,7 +321,7 @@ static void print_status_narrow(void) {
     if (keymap_config.swap_lctl_lgui) {
         oled_write_raw_P(mac_logo, sizeof(mac_logo));
     } else {
-        oled_write_raw_P(windows_logo, sizeof(windows_logo));
+        oled_write_raw_P(mac_logo, sizeof(mac_logo));
     }
 
     oled_set_cursor(0, 3);
@@ -330,16 +346,13 @@ static void print_status_narrow(void) {
 
     switch (get_highest_layer(layer_state)) {
         case _QWERTY:
-            oled_write("Base ", false);
+            oled_write("Base", false);
             break;
-        case _GAMING:
-            oled_write("Games", false);
+        case _NAV:
+            oled_write("Navig", false);
             break;
-        case _RAISE:
-            oled_write("Raise", false);
-            break;
-        case _LOWER:
-            oled_write("Lower", false);
+        case _SYM:
+            oled_write("Symb ", false);
             break;
         case _ADJUST:
             oled_write("Adj  ", false);
@@ -388,29 +401,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 set_single_persistent_default_layer(_QWERTY);
             }
             return false;
-        case KC_GAMING:
-            if (record->event.pressed) {
-                set_single_persistent_default_layer(_GAMING);
-            }
-            return false;
-        case KC_LOWER:
-            if (record->event.pressed) {
-                layer_on(_LOWER);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            } else {
-                layer_off(_LOWER);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            }
-            return false;
-        case KC_RAISE:
-            if (record->event.pressed) {
-                layer_on(_RAISE);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            } else {
-                layer_off(_RAISE);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            }
-            return false;
+        // case KC_LOWER:
+        //     if (record->event.pressed) {
+        //         layer_on(_LOWER);
+        //         update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        //     } else {
+        //         layer_off(_LOWER);
+        //         update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        //     }
+        //     return false;
+        // case KC_RAISE:
+        //     if (record->event.pressed) {
+        //         layer_on(_RAISE);
+        //         update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        //     } else {
+        //         layer_off(_RAISE);
+        //         update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        //     }
+        //     return false;
         case KC_ADJUST:
             if (record->event.pressed) {
                 layer_on(_ADJUST);
@@ -565,25 +573,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
             /* LAYER */
 
-        case KC_LAYER:
-            if (record->event.pressed) {
-                if (shift_held) {
-                    if (record->event.pressed) {
-                        if (get_highest_layer(default_layer_state) == _QWERTY) {
-                            set_single_persistent_default_layer(_GAMING);
-                        } else if (get_highest_layer(default_layer_state) == _GAMING) {
-                            set_single_persistent_default_layer(_QWERTY);
-                        }
-                    }
-                } else {
-                    layer_on(_LOWER);
-                    update_tri_layer(_LOWER, _RAISE, _ADJUST);
-                }
-            } else {
-                layer_off(_LOWER);
-                update_tri_layer(_LOWER, _RAISE, _ADJUST);
-            }
-            return false;
+            // case KC_LAYER:
+            //     if (record->event.pressed) {
+            //         if (shift_held) {
+            //             if (record->event.pressed) {
+            //                 if (get_highest_layer(default_layer_state) == _QWERTY) {
+            //                     set_single_persistent_default_layer(_GAMING);
+            //                 } else if (get_highest_layer(default_layer_state) == _GAMING) {
+            //                     set_single_persistent_default_layer(_QWERTY);
+            //                 }
+            //             }
+            //         } else {
+            //             layer_on(_LOWER);
+            //             update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            //         }
+            //     } else {
+            //         layer_off(_LOWER);
+            //         update_tri_layer(_LOWER, _RAISE, _ADJUST);
+            //     }
+            //     return false;
 
             /* KEYBOARD PET STATUS START */
 

@@ -1,8 +1,11 @@
 OLED_ENABLE = yes
-# OLED_DRIVER = SSD1306
+RGB_MATRIX_ENABLE = yes
+RGBLIGHT_ENABLE = no
 
 # ENCODER_ENABLE = yes
 # CONSOLE_ENABLE = yes
 EXTRAKEY_ENABLE = yes
 
 WPM_ENABLE = yes
+
+EXTRAFLAGS = -flto -mcall-prologues
