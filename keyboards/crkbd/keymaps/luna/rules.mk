@@ -6,5 +6,6 @@ RGB_MATRIX_ENABLE = yes
 EXTRAKEY_ENABLE = yes
 
 WPM_ENABLE = yes
+TAP_DANCE_ENABLE = yes
 
-EXTRAFLAGS = -flto -mcall-prologues
+LTO_ENABLE = yes
