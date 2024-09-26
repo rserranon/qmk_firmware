@@ -18,11 +18,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
+#include "combos.c"
+
 enum _layers {
     _QWERTY = 0,
     _MEDIA,
     _NAV,
-    _MOUSE,
+    // _MOUSE,
     _SYM,
     _NUM,
     _FUN,
@@ -32,12 +34,6 @@ enum _layers {
 
 // Declare a variable to track if the accent mode is enabled
 bool accent_mode = false;
-enum custom_keycodes {
-    KC_BSPC_DEL = SAFE_RANGE,
-    A_ACCENT,
-    N_TILDE,
-    ACCENT_KEY,
-};
 
 #include "tapdance.c"
 
@@ -64,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | GRV  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |KC_BSPC|
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | TAB  | A    | S    | D    | F    |   G  |                    |   H  | J    | K    | L    |  SCLN|  Ñ   |
+ * | TAB  | A    | S    | D    | F    |   G  |                    |   H  | J    | K    | L    |  SCLN|  ACCENT & enie    |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |KC_ENT|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -94,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_NAV] = LAYOUT(
   _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,           KC_HOME, KC_PGDN, KC_PGUP, KC_END,   _______, _______,
-  _______, M_LSFT,  M_LCTL, M_LALT,  M_LGUI,  XXXXXXX,            KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, XXXXXXX, KC_QUOTE,
+  _______, M_LSFT,  M_LCTL, M_LALT,  M_LGUI,  XXXXXXX,            KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, XXXXXXX, TD(TD_DQT),
   _______, KC_UNDO, KC_CUT,KC_COPY, KC_PASTE, XXXXXXX,            XXXXXXX, KC_PASTE,KC_COPY, KC_CUT,   KC_UNDO, KC_ENT,
                               _______, _______, _______,      L_SYM_ENT, _______, _______
 
@@ -187,29 +183,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                          |_MEDIA| _NAV |/SHIFT /         \ _SYM \ |_NUM  |_FUN |
  *                          `--------------------'           '------''--------------'
  */
-[_MOUSE] = LAYOUT(
-  KC_ESC,  KC_INS,  KC_AMPR,  KC_ASTR,  KC_LPRN, KC_RPRN,         KC_PGUP, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
-  _______,  KC_LALT, KC_DLR,  KC_PERC,  KC_CIRC, KC_CAPS,         KC_PGDN, KC_4,  KC_5, KC_6,KC_DEL,   KC_ENT,
-  _______,  KC_UNDO, KC_EXLM,   KC_AT, KC_HASH, XXXXXXX,          XXXXXXX, KC_1, KC_2, KC_3, _______, _______,
-                                _______, _______, _______,    _______, _______, _______
-),
+// [_MOUSE] = LAYOUT(
+//   KC_ESC,  KC_INS,  KC_AMPR,  KC_ASTR,  KC_LPRN, KC_RPRN,         KC_PGUP, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
+//   _______,  KC_LALT, KC_DLR,  KC_PERC,  KC_CIRC, KC_CAPS,         KC_PGDN, KC_4,  KC_5, KC_6,KC_DEL,   KC_ENT,
+//   _______,  KC_UNDO, KC_EXLM,   KC_AT, KC_HASH, XXXXXXX,          XXXXXXX, KC_1, KC_2, KC_3, _______, _______,
+//                                 _______, _______, _______,    _______, _______, _______
+// ),
 
 };
 // clang-format on
 
 /* 32 * 32 logo */
-static void render_logo(void) {
-    static const char PROGMEM hell_logo[] = {0x00, 0x80, 0xc0, 0xc0, 0x60, 0x60, 0x30, 0x30, 0x18, 0x1c, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x80, 0xe0, 0x78, 0x1e, 0x06, 0x00, 0x0c, 0x1c, 0x18, 0x30, 0x30, 0x60, 0x60, 0xc0, 0xc0, 0x80, 0x00, 0x01, 0x03, 0x07, 0x06, 0x0c, 0x0c, 0x18, 0x18, 0x30, 0x70, 0x60, 0x00, 0xc0, 0xf0, 0x3c, 0x0f, 0x03, 0x00, 0x00, 0x00, 0x00, 0x60, 0x70, 0x30, 0x18, 0x18, 0x0c, 0x0c, 0x06, 0x07, 0x03, 0x01, 0x00, 0xf8, 0xf8, 0x80, 0x80, 0x80, 0xf8, 0xf8, 0x00, 0x80, 0xc0, 0xc0, 0x40, 0xc0, 0xc0, 0x80, 0x00, 0xf8, 0xf8, 0x00, 0xf8, 0xf8, 0x00, 0x08, 0x38, 0x08, 0x00, 0x38, 0x08, 0x30, 0x08, 0x38, 0x00, 0x1f, 0x1f, 0x01, 0x01, 0x01, 0x1f, 0x1f, 0x00, 0x0f, 0x1f, 0x1a, 0x12, 0x1a, 0x1b, 0x0b, 0x00, 0x1f, 0x1f, 0x00, 0x1f, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
-    oled_write_raw_P(hell_logo, sizeof(hell_logo));
-}
+// static void render_logo(void) {
+//     static const char PROGMEM hell_logo[] = {0x00, 0x80, 0xc0, 0xc0, 0x60, 0x60, 0x30, 0x30, 0x18, 0x1c, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x80, 0xe0, 0x78, 0x1e, 0x06, 0x00, 0x0c, 0x1c, 0x18, 0x30, 0x30, 0x60, 0x60, 0xc0, 0xc0, 0x80, 0x00, 0x01, 0x03, 0x07, 0x06, 0x0c, 0x0c, 0x18, 0x18, 0x30, 0x70, 0x60, 0x00, 0xc0, 0xf0, 0x3c, 0x0f, 0x03, 0x00, 0x00, 0x00, 0x00, 0x60, 0x70, 0x30, 0x18, 0x18, 0x0c, 0x0c, 0x06, 0x07, 0x03, 0x01, 0x00, 0xf8, 0xf8, 0x80, 0x80, 0x80, 0xf8, 0xf8, 0x00, 0x80, 0xc0, 0xc0, 0x40, 0xc0, 0xc0, 0x80, 0x00, 0xf8, 0xf8, 0x00, 0xf8, 0xf8, 0x00, 0x08, 0x38, 0x08, 0x00, 0x38, 0x08, 0x30, 0x08, 0x38, 0x00, 0x1f, 0x1f, 0x01, 0x01, 0x01, 0x1f, 0x1f, 0x00, 0x0f, 0x1f, 0x1a, 0x12, 0x1a, 0x1b, 0x0b, 0x00, 0x1f, 0x1f, 0x00, 0x1f, 0x1f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+//
+//     oled_write_raw_P(hell_logo, sizeof(hell_logo));
+// }
 
 /* 32 * 14 os logos */
 static const char PROGMEM mac_logo[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0xf0, 0xf8, 0xf8, 0xf8, 0xf0, 0xf6, 0xfb, 0xfb, 0x38, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x07, 0x0f, 0x1f, 0x1f, 0x0f, 0x0f, 0x1f, 0x1f, 0x0f, 0x06, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 /* Smart Backspace Delete */
 
-bool            shift_held = false;
+// bool            shift_held = false;
 static uint16_t held_shift = 0;
 
 /* KEYBOARD PET START */
@@ -281,15 +277,15 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
                                                     }};
 
     /* Sneak */
-    static const char PROGMEM sneak[2][ANIM_SIZE] = {/* 'sneak1', 32x22px */
-                                                     {
-                                                         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x40, 0x40, 0x40, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x40, 0x40, 0x80, 0x00, 0x80, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1e, 0x21, 0xf0, 0x04, 0x02, 0x02, 0x02, 0x02, 0x03, 0x02, 0x02, 0x04, 0x04, 0x04, 0x03, 0x01, 0x00, 0x00, 0x09, 0x01, 0x80, 0x80, 0xab, 0x04, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x1c, 0x20, 0x20, 0x3c, 0x0f, 0x11, 0x1f, 0x02, 0x06, 0x18, 0x20, 0x20, 0x38, 0x08, 0x10, 0x18, 0x04, 0x04, 0x02, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
-                                                     },
-
-                                                     /* 'sneak2', 32x22px */
-                                                     {
-                                                         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x40, 0x40, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe0, 0xa0, 0x20, 0x40, 0x80, 0xc0, 0x20, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3e, 0x41, 0xf0, 0x04, 0x02, 0x02, 0x02, 0x03, 0x02, 0x02, 0x02, 0x04, 0x04, 0x02, 0x01, 0x00, 0x00, 0x00, 0x04, 0x00, 0x40, 0x40, 0x55, 0x82, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3f, 0x20, 0x30, 0x0c, 0x02, 0x05, 0x09, 0x12, 0x1e, 0x04, 0x18, 0x10, 0x08, 0x10, 0x20, 0x28, 0x34, 0x06, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                                     }};
+    // static const char PROGMEM sneak[2][ANIM_SIZE] = {/* 'sneak1', 32x22px */
+    //                                                  {
+    //                                                      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x40, 0x40, 0x40, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0, 0x40, 0x40, 0x80, 0x00, 0x80, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1e, 0x21, 0xf0, 0x04, 0x02, 0x02, 0x02, 0x02, 0x03, 0x02, 0x02, 0x04, 0x04, 0x04, 0x03, 0x01, 0x00, 0x00, 0x09, 0x01, 0x80, 0x80, 0xab, 0x04, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x1c, 0x20, 0x20, 0x3c, 0x0f, 0x11, 0x1f, 0x02, 0x06, 0x18, 0x20, 0x20, 0x38, 0x08, 0x10, 0x18, 0x04, 0x04, 0x02, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00,
+    //                                                  },
+    //
+    //                                                  /* 'sneak2', 32x22px */
+    //                                                  {
+    //                                                      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x40, 0x40, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe0, 0xa0, 0x20, 0x40, 0x80, 0xc0, 0x20, 0x40, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3e, 0x41, 0xf0, 0x04, 0x02, 0x02, 0x02, 0x03, 0x02, 0x02, 0x02, 0x04, 0x04, 0x02, 0x01, 0x00, 0x00, 0x00, 0x04, 0x00, 0x40, 0x40, 0x55, 0x82, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3f, 0x20, 0x30, 0x0c, 0x02, 0x05, 0x09, 0x12, 0x1e, 0x04, 0x18, 0x10, 0x08, 0x10, 0x20, 0x28, 0x34, 0x06, 0x02, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+    //                                                  }};
 
     /* animation */
     void animate_luna(void) {
@@ -317,9 +313,9 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
         if (led_usb_state.caps_lock) {
             oled_write_raw_P(bark[current_frame], ANIM_SIZE);
 
-        } else if (isSneaking) {
-            oled_write_raw_P(sneak[current_frame], ANIM_SIZE);
-
+            // } else if (isSneaking) {
+            //     oled_write_raw_P(sneak[current_frame], ANIM_SIZE);
+            //
         } else if (current_wpm <= MIN_WALK_SPEED) {
             oled_write_raw_P(sit[current_frame], ANIM_SIZE);
 
@@ -351,7 +347,7 @@ static void render_luna(int LUNA_X, int LUNA_Y) {
 /* KEYBOARD PET END */
 
 static void print_logo_narrow(void) {
-    render_logo();
+    // render_logo();
 
     /* wpm counter */
     uint8_t n = get_current_wpm();
@@ -376,33 +372,33 @@ static void print_status_narrow(void) {
         oled_write_raw_P(mac_logo, sizeof(mac_logo));
     }
 
-    oled_set_cursor(0, 3);
-
-    switch (get_highest_layer(default_layer_state)) {
-        case _QWERTY:
-            oled_write("QWRTY", false);
-            break;
-        case _MEDIA:
-            oled_write("Media", false);
-            break;
-        case _NAV:
-            oled_write("Nav  ", false);
-            break;
-        case _MOUSE:
-            oled_write("Mouse", false);
-            break;
-        case _SYM:
-            oled_write("Sym  ", false);
-            break;
-        case _NUM:
-            oled_write("Num  ", false);
-            break;
-        case _FUN:
-            oled_write("Fun  ", false);
-            break;
-        default:
-            oled_write("UNDEF", false);
-    }
+    // oled_set_cursor(0, 3);
+    //
+    // switch (get_highest_layer(default_layer_state)) {
+    //     case _QWERTY:
+    //         oled_write("QWRTY", false);
+    //         break;
+    //     case _MEDIA:
+    //         oled_write("Media", false);
+    //         break;
+    //     case _NAV:
+    //         oled_write("Nav  ", false);
+    //         break;
+    //     // case _MOUSE:
+    //     //     oled_write("Mouse", false);
+    //     //     break;
+    //     case _SYM:
+    //         oled_write("Sym  ", false);
+    //         break;
+    //     case _NUM:
+    //         oled_write("Num  ", false);
+    //         break;
+    //     case _FUN:
+    //         oled_write("Fun  ", false);
+    //         break;
+    //     default:
+    //         oled_write("UNDEF", false);
+    // }
 
     oled_set_cursor(0, 5);
 
@@ -421,9 +417,9 @@ static void print_status_narrow(void) {
         case _NAV:
             oled_write("Nav  ", false);
             break;
-        case _MOUSE:
-            oled_write("Mouse", false);
-            break;
+        // case _MOUSE:
+        //     oled_write("Mouse", false);
+        //     break;
         case _SYM:
             oled_write("Sym  ", false);
             break;
@@ -510,36 +506,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case KC_RSFT:
         case KC_LSFT:
-            shift_held = record->event.pressed;
+            // shift_held = record->event.pressed;
             held_shift = keycode;
             break;
-        case KC_BSPC_DEL:
-            if (record->event.pressed) {
-                if (shift_held) {
-                    unregister_code(held_shift);
-                    register_code(KC_DEL);
-                } else {
-                    register_code(KC_BSPC);
-                }
-            } else {
-                unregister_code(KC_DEL);
-                unregister_code(KC_BSPC);
-                if (shift_held) {
-                    register_code(held_shift);
-                }
-            }
-            return false;
+            // case KC_BSPC_DEL:
+            //     if (record->event.pressed) {
+            //         if (shift_held) {
+            //             unregister_code(held_shift);
+            //             register_code(KC_DEL);
+            //         } else {
+            //             register_code(KC_BSPC);
+            //         }
+            //     } else {
+            //         unregister_code(KC_DEL);
+            //         unregister_code(KC_BSPC);
+            //         if (shift_held) {
+            //             register_code(held_shift);
+            //         }
+            //     }
+            //     return false;
 
             /* KEYBOARD PET STATUS START */
 
-        case MOD_RGUI:
-        case MOD_LGUI:
-            if (record->event.pressed) {
-                isSneaking = true;
-            } else {
-                isSneaking = false;
-            }
-            break;
+        // case MOD_RGUI:
+        // case MOD_LGUI:
+        //     if (record->event.pressed) {
+        //         isSneaking = true;
+        //     } else {
+        //         isSneaking = false;
+        //     }
+        //     break;
         case L_SYM_SPC:
             if (record->event.pressed) {
                 isJumping  = true;

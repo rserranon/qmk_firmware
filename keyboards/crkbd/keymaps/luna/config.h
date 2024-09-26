@@ -12,9 +12,11 @@ the Free Software Foundation, either version 2 of the License, or
 
 // clang-format off
 
+#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
+
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD
-#define QUICK_TAP_TERM_PER_KEY
+// #define QUICK_TAP_TERM_PER_KEY
 
 // One shot Modifiers
 #define ONESHOT_TAP_TOGGLE 5  /* Tapping this number of times holds the key until tapped once again. */
@@ -42,17 +44,17 @@ the Free Software Foundation, either version 2 of the License, or
 // #    define ENABLE_RGB_MATRIX_ALPHAS_MODS
 // #    define ENABLE_RGB_MATRIX_GRADIENT_UP_DOWN
 #define ENABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
-#define ENABLE_RGB_MATRIX_BREATHING
+// #define ENABLE_RGB_MATRIX_BREATHING
 // #    define ENABLE_RGB_MATRIX_BAND_SAT
 // #    define ENABLE_RGB_MATRIX_BAND_VAL
 // #    define ENABLE_RGB_MATRIX_BAND_PINWHEEL_SAT
 // #    define ENABLE_RGB_MATRIX_BAND_PINWHEEL_VAL
-#define ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
+// #define ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
 // #    define ENABLE_RGB_MATRIX_BAND_SPIRAL_VAL
 // #    define ENABLE_RGB_MATRIX_CYCLE_ALL
 // #    define ENABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
 // #    define ENABLE_RGB_MATRIX_CYCLE_UP_DOWN
-#define ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
+// #define ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
 // #    define ENABLE_RGB_MATRIX_CYCLE_OUT_IN
 // #    define ENABLE_RGB_MATRIX_CYCLE_OUT_IN_DUAL
 // #    define ENABLE_RGB_MATRIX_CYCLE_PINWHEEL
@@ -86,5 +88,5 @@ the Free Software Foundation, either version 2 of the License, or
 // #    define ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
 
 #define RGB_MATRIX_DEFAULT_ON true // Sets the default enabled state, if none has been set
-#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_GRADIENT_LEFT_RIGHT // Sets the default mode, if none has been set
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_RAINBOW_BEACON  // Sets the default mode, if none has been set
 #endif

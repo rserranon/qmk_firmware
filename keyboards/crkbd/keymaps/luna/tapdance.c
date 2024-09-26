@@ -11,6 +11,7 @@ enum {
     TD_DOT,
     TD_SLSH,
     TD_GRV,
+    TD_DQT,
     TD_SP,
 };
 
@@ -41,5 +42,6 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_DOT]  = ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_GT),
     [TD_SLSH] = ACTION_TAP_DANCE_DOUBLE(KC_SLSH, KC_QUES),
     [TD_GRV]  = ACTION_TAP_DANCE_DOUBLE(KC_GRV, KC_TILD),
+    [TD_DQT]  = ACTION_TAP_DANCE_DOUBLE(KC_QUOT, KC_DQT),
     [TD_SP]   = ACTION_TAP_DANCE_FN_ADVANCED(NULL, tap_dance_sp_finished, tap_dance_sp_reset),
 };
