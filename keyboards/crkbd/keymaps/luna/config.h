@@ -11,8 +11,7 @@ the Free Software Foundation, either version 2 of the License, or
 #pragma once // clang-format off Tap-Hold configuration
 
 // clang-format off
-
-#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
+#define NO_BOOTMAGIC
 
 #define TAPPING_TERM 200
 #define PERMISSIVE_HOLD
@@ -20,7 +19,9 @@ the Free Software Foundation, either version 2 of the License, or
 
 // One shot Modifiers
 #define ONESHOT_TAP_TOGGLE 5  /* Tapping this number of times holds the key until tapped once again. */
-#define ONESHOT_TIMEOUT 5000  /* Time (in ms) before the one shot key is released */
+#define ONESHOT_TIMEOUT 3000  /* Time (in ms) before the one shot key is released */
+
+#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 
 #define SPLIT_WPM_ENABLE
 
@@ -64,7 +65,7 @@ the Free Software Foundation, either version 2 of the License, or
 // #    define ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
 // #    define ENABLE_RGB_MATRIX_RAINDROPS
 // #    define ENABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
-#define ENABLE_RGB_MATRIX_HUE_BREATHING
+// #define ENABLE_RGB_MATRIX_HUE_BREATHING
 // #    define ENABLE_RGB_MATRIX_HUE_PENDULUM
 // #    define ENABLE_RGB_MATRIX_HUE_WAVE
 // #define ENABLE_RGB_MATRIX_PIXEL_RAIN
