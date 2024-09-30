@@ -127,7 +127,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                          `--------------------'           '------''--------------'
  */
 [_NUM] = LAYOUT(
-  KC_LBRC, _______, KC_7, KC_8,  KC_9,  KC_RBRC,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
+  _______, KC_LBRC, KC_7, KC_8,  KC_9,  KC_RBRC,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,
   _______,_______,  KC_4, KC_5,  KC_6,  KC_EQL ,                  XXXXXXX, M_RGUI , M_RALT,  M_RCTL,  M_RSFT,  _______,
   _______,_______,  KC_1, KC_2,  KC_3,  KC_BSLS,                  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, _______,
                                KC_DOT, KC_0, KC_MINUS,        _______, _______, _______
@@ -432,28 +432,35 @@ bool oled_task_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    // Simplified handling of MOD keys
     if (record->event.pressed) {
         switch (keycode) {
             case KC_COPY:
-                tap_code16(LCTL(KC_C)); // Simulate Ctrl+C
-                return false;
+                register_code16(LCTL(KC_C)); // Press Ctrl+C
+                break;
             case KC_PASTE:
-                tap_code16(LCTL(KC_V)); // Simulate Ctrl+V
-                return false;
+                register_code16(LCTL(KC_V)); // Press Ctrl+V
+                break;
             case KC_CUT:
-                tap_code16(LCTL(KC_X)); // Simulate Ctrl+X
-                return false;
+                register_code16(LCTL(KC_X)); // Press Ctrl+X
+                break;
             case KC_UNDO:
-                tap_code16(LCTL(KC_Z)); // Simulate Ctrl+Z
-                return false;
+                register_code16(LCTL(KC_Z)); // Press Ctrl+Z
+                break;
             case L_SYM_SPC:
-                if (record->event.pressed) {
-                    isJumping  = true;
-                    showedJump = false;
-                } else {
-                    isJumping = false;
-                }
+                isJumping  = true;
+                showedJump = false;
+                break;
+        }
+    } else {
+        switch (keycode) {
+            case KC_COPY:
+            case KC_PASTE:
+            case KC_CUT:
+            case KC_UNDO:
+                unregister_code16(LCTL(KC_C)); // Release Ctrl key for all cases
+                break;
+            case L_SYM_SPC:
+                isJumping = false;
                 break;
         }
     }
